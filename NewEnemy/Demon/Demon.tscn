@@ -1,0 +1,112 @@
+[gd_scene load_steps=24 format=2]
+
+[ext_resource path="res://Stats/StatsM.gd" type="Script" id=1]
+[ext_resource path="res://NewEnemy/Demon/Demon.gd" type="Script" id=2]
+[ext_resource path="res://SpritesFurro/Action RPG Resources/Shadows/SmallShadow.png" type="Texture" id=3]
+[ext_resource path="res://NewEnemy/Demon/sprites/big_demon_run_anim_f3.png" type="Texture" id=4]
+[ext_resource path="res://NewEnemy/Demon/sprites/big_demon_idle_anim_f2.png" type="Texture" id=5]
+[ext_resource path="res://NewEnemy/Demon/sprites/big_demon_run_anim_f0.png" type="Texture" id=6]
+[ext_resource path="res://NewEnemy/Demon/sprites/big_demon_run_anim_f2.png" type="Texture" id=7]
+[ext_resource path="res://NewEnemy/Demon/sprites/big_demon_idle_anim_f1.png" type="Texture" id=8]
+[ext_resource path="res://NewEnemy/Demon/sprites/big_demon_idle_anim_f3.png" type="Texture" id=9]
+[ext_resource path="res://NewEnemy/Demon/sprites/big_demon_run_anim_f1.png" type="Texture" id=10]
+[ext_resource path="res://NewEnemy/Demon/sprites/big_demon_idle_anim_f0.png" type="Texture" id=11]
+[ext_resource path="res://Enemys/PlayerDetectionZone.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Hitboxes_and_Hurtboxes/Hurtbox.tscn" type="PackedScene" id=13]
+[ext_resource path="res://Stats/Stats.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Hitboxes_and_Hurtboxes/SoftCollision.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Hitboxes_and_Hurtboxes/Hitbox.tscn" type="PackedScene" id=16]
+[ext_resource path="res://Enemys/WanderController.tscn" type="PackedScene" id=17]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 11 ), ExtResource( 8 ), ExtResource( 5 ), ExtResource( 9 ) ],
+"loop": true,
+"name": "IDLE",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 6 ), ExtResource( 10 ), ExtResource( 7 ), ExtResource( 4 ) ],
+"loop": true,
+"name": "Walk",
+"speed": 10.0
+} ]
+
+[sub_resource type="CapsuleShape2D" id=7]
+radius = 7.0
+height = 0.0
+
+[sub_resource type="CapsuleShape2D" id=8]
+radius = 7.0
+height = 6.0
+
+[sub_resource type="CircleShape2D" id=9]
+radius = 131.095
+
+[sub_resource type="CapsuleShape2D" id=10]
+radius = 11.0
+height = 10.0
+
+[sub_resource type="CircleShape2D" id=11]
+radius = 5.09902
+
+[node name="Demon" type="KinematicBody2D"]
+collision_mask = 0
+script = ExtResource( 2 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 0, -8 )
+frames = SubResource( 1 )
+animation = "IDLE"
+frame = 1
+playing = true
+offset = Vector2( 0, -12 )
+
+[node name="ShadowSprite" type="Sprite" parent="."]
+texture = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+shape = SubResource( 7 )
+
+[node name="Hurtbox" parent="." instance=ExtResource( 13 )]
+visible = false
+collision_layer = 8
+collision_mask = 3
+
+[node name="CollisionShape2D" parent="Hurtbox" index="0"]
+position = Vector2( 0, -5 )
+shape = SubResource( 8 )
+
+[node name="Stats" parent="." instance=ExtResource( 14 )]
+script = ExtResource( 1 )
+max_health = 10
+
+[node name="PlayerDetectionZone" parent="." instance=ExtResource( 12 )]
+
+[node name="CollisionShape2D" parent="PlayerDetectionZone" index="0"]
+modulate = Color( 1, 0.615686, 1, 1 )
+shape = SubResource( 9 )
+
+[node name="Hitbox" parent="." instance=ExtResource( 16 )]
+collision_mask = 4
+
+[node name="CollisionShape2D" parent="Hitbox" index="0"]
+position = Vector2( 0, -7 )
+shape = SubResource( 10 )
+
+[node name="SoftCollision" parent="." instance=ExtResource( 15 )]
+visible = false
+
+[node name="CollisionShape2D" parent="SoftCollision" index="0"]
+shape = SubResource( 11 )
+
+[node name="WanderController" parent="." instance=ExtResource( 17 )]
+visible = false
+
+[connection signal="area_entered" from="Hurtbox" to="." method="_on_Hurtbox_area_entered"]
+[connection signal="no_health" from="Stats" to="." method="_on_Stats_no_health"]
+
+[editable path="Hurtbox"]
+[editable path="PlayerDetectionZone"]
+[editable path="Hitbox"]
+[editable path="SoftCollision"]

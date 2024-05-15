@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Magic Mountain.mp3-b3904e5cd09ebbd7ee9ca0b36bc6d7a0.mp3str"
+
+[deps]
+
+source_file="res://TilesMap/Magic Mountain.mp3"
+dest_files=[ "res://.import/Magic Mountain.mp3-b3904e5cd09ebbd7ee9ca0b36bc6d7a0.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
