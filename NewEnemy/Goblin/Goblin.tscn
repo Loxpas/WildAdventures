@@ -61,7 +61,7 @@ script = ExtResource( 2 )
 position = Vector2( -1, 5 )
 frames = SubResource( 1 )
 animation = "IDLE"
-frame = 2
+frame = 3
 playing = true
 offset = Vector2( 0, -12 )
 
@@ -71,6 +71,7 @@ texture = ExtResource( 1 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
 shape = SubResource( 7 )
+disabled = true
 
 [node name="Hurtbox" parent="." instance=ExtResource( 4 )]
 visible = false
